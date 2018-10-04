@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	 	<title>Lamp</title>
+	</head>
+<body>
+
+	<h1>{{bucketname}}</h1>
+	<div class="grid-container">
+		{% for name in list_example %}
+		<div class="grid-item">
+		<li>{{ name[0] }}</li>
+		<img src={{name[1]}}>
+		</div>
+		{% endfor %}
+	</div> 
+<!-- 	<ul>
+		 {% for name in list_example %}
+		 <li>{{ name[0] }}</li>
+		 <img src={{name[1]}}>
+		 {% endfor %}
+	</ul> -->
+	 
+	</body>
+</html>
+
+<style>
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  padding: 10px;
+}
+.grid-item {
+  padding: 20px;
+  font-size: 30px;
+  text-align: center;
+}
+</style>
