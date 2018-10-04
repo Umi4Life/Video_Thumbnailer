@@ -15,7 +15,20 @@ def index():
 def show(bucketname):
 	r = requests.get(f"http://localhost:5000/{bucketname}?list")
 	objects = (r.json()['objects'])
-	return render_template('show.html', bucketname=bucketname, list_example=[(obj['name'], f"http://localhost:5000/gifs/{bucketname}_{obj['name']}.gif") for obj in objects])
+	return render_template('show.html',
+		display=bucketname+"/display", 
+		bucketname=bucketname, list_example=[(obj['name'],f"http://localhost:5001/{bucketname}/{obj['name']}")for obj in objects],
+		make_all=f"http://localhost:5001/{bucketname}"
+		)
+
+@app.route('/<bucketname>/display')
+def display(bucketname):
+	r = requests.get(f"http://localhost:5000/{bucketname}?list")
+	objects = (r.json()['objects'])
+	return render_template('display.html',
+		show=bucketname+"/show_all_videos", 
+		bucketname=bucketname, 
+		list_example=[(obj['name'],f"http://localhost:5000/gifs/{bucketname}_{obj['name']}.gif",f"http://localhost:5000/gifs/{bucketname}_{obj['name']}.gif?delete") for obj in objects])
 
 @app.errorhandler(404)
 def page_not_found(e):

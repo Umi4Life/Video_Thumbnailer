@@ -5,26 +5,27 @@
 	</head>
 <body>
 	<h1>{{bucketname}}</h1>
-	<form action=display>
-			<input type="submit" value="Display GIFs">
-	</form>
-	<form action={{make_all}}>
-			<input type="submit" value="Make GIFs for all">
+	<form action=show_all_videos>
+			<input type="submit" value="Display ALL FILEs">
 	</form> 
 	<div class="grid-container">
 		{% for name in list_example %}
 		<div class="grid-item">
 		<li>{{ name[0] }}</li>
-		<iframe width="0" height="0" border="0" name="dummyframe" id="dummyframe"></iframe>
-
-		 <form action={{name[1]}} method="post" target="dummyframe">
-			<input type="submit" value="makeGIF">
+		<form action={{name[2]}} data-method="delete">
+			<input type="submit" value="Delete">
 		</form> 
+		<img src={{name[1]}}>
 		</div>
 		{% endfor %}
 	</div> 
 
 	</body>
+<script>
+function myFunction() {
+    document.getElementById("demo").innerHTML = "Paragraph changed.";
+}
+</script>
 </html>
 
 <style>
