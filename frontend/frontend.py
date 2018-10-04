@@ -1,8 +1,12 @@
+#!/usr/bin/env python3
+
 from jinja2 import Template
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify, request
 import json
+import os
 import requests
 
+HOST = os.getenv("thumbnail_worker_frontend_1", "localhost")
 app = Flask(__name__)
 
 @app.route('/')
@@ -17,7 +21,9 @@ def show(bucketname):
 	objects = (r.json()['objects'])
 	return render_template('show.html',
 		display=bucketname+"/display", 
-		bucketname=bucketname, list_example=[(obj['name'],f"http://localhost:5001/{bucketname}/{obj['name']}")for obj in objects],
+		bucketname=bucketname, list_example=[(  obj['name'],
+												f"http://localhost:5001/{bucketname}/{obj['name']}",
+												f"http://localhost:8080/{bucketname}/{obj['name']}/delete")for obj in objects],
 		make_all=f"http://localhost:5001/{bucketname}"
 		)
 
@@ -26,9 +32,22 @@ def display(bucketname):
 	r = requests.get(f"http://localhost:5000/{bucketname}?list")
 	objects = (r.json()['objects'])
 	return render_template('display.html',
+		delete_all=f"http://localhost:8080/{bucketname}/delete_all",
 		show=bucketname+"/show_all_videos", 
 		bucketname=bucketname, 
-		list_example=[(obj['name'],f"http://localhost:5000/gifs/{bucketname}_{obj['name']}.gif",f"http://localhost:5000/gifs/{bucketname}_{obj['name']}.gif?delete") for obj in objects])
+		list_example=[(obj['name'],f"http://localhost:5000/gifs/{bucketname}_{obj['name']}.gif",f"http://localhost:8080/{bucketname}/{obj['name']}/delete") for obj in objects])
+
+@app.route('/<bucketname>/<objectname>/delete')
+def delete(bucketname, objectname):
+	r = requests.delete(f"http://localhost:5000/gifs/{bucketname}_{objectname}.gif?delete")
+	return jsonify({'status': 'OK'})
+@app.route('/<bucketname>/delete_all')
+def delete_all(bucketname):
+	r = requests.get(f"http://localhost:5000/{bucketname}?list")
+	objects = (r.json()['objects'])
+	for obj in objects:
+		requests.delete(f"http://localhost:5000/gifs/{bucketname}_{obj['name']}.gif?delete")
+	return jsonify({'status': 'OK'})
 
 @app.errorhandler(404)
 def page_not_found(e):

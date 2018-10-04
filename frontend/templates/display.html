@@ -8,11 +8,14 @@
 	<form action=show_all_videos>
 			<input type="submit" value="Display ALL FILEs">
 	</form> 
+	<form action={{delete_all}}>
+			<input type="submit" value="Delete all GIFs">
+		</form> 
 	<div class="grid-container">
 		{% for name in list_example %}
 		<div class="grid-item">
 		<li>{{ name[0] }}</li>
-		<form action={{name[2]}} data-method="delete">
+		<form action={{name[2]}}>
 			<input type="submit" value="Delete">
 		</form> 
 		<img src={{name[1]}}>

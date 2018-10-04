@@ -15,9 +15,7 @@
 		{% for name in list_example %}
 		<div class="grid-item">
 		<li>{{ name[0] }}</li>
-		<iframe width="0" height="0" border="0" name="dummyframe" id="dummyframe"></iframe>
-
-		 <form action={{name[1]}} method="post" target="dummyframe">
+		 <form action={{name[1]}} method="post">
 			<input type="submit" value="makeGIF">
 		</form> 
 		</div>
