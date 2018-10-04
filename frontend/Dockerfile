@@ -15,4 +15,5 @@ WORKDIR /app
 # How to run it when we start up the box?
 #CMD ["gunicorn", "-b 0.0.0.0:5000", "-w 2", "main:app"]
 
-CMD ["./frontend.py"]
+ENV FLASK_APP=frontend
+CMD ["flask", "run", "--host", "0.0.0.0", "--port", "8080"]
