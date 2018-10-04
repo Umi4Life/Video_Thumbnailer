@@ -1,0 +1,31 @@
+version: '3.7'
+services:
+  sos:
+    build: ./sos
+    ports:
+      - "5000:5000"
+  mongo:
+    image: "mongo:3.6.8-stretch"
+    environment:
+      - MONGO_INITDB_DATABASE=witbucket
+  redis:
+    image: redis:4-alpine
+    ports:
+      - '6379:6379'
+  worker:
+    build:
+      context: worker
+    depends_on:
+      - "redis"
+    environment:
+      - REDIS_QUEUE=redis
+  queue-wrapper:
+    build:
+      context: queue-wrapper
+    depends_on:
+      - "redis"
+    environment:
+      - REDIS_QUEUE=redis
+    ports:
+      - '5001:5001'
+

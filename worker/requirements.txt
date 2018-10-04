@@ -1,0 +1,5 @@
+Flask>=1.0
+redis==2.10
+ez_setup==0.9
+requests==2.19.1
+moviepy==0.2.3.5
