@@ -28,8 +28,8 @@ services:
       - REDIS_QUEUE=redis
     ports:
       - '5001:5001'
-  frontend:
-    build: ./frontend
-    ports:
-      - "8080:8080"
+  # frontend:
+  #   build: ./frontend
+  #   ports:
+  #     - "8080:8080"
 
