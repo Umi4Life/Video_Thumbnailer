@@ -20,7 +20,15 @@ def index():
 @app.route('/<bucketname>/show_all_videos')
 def show(bucketname):
 	r = requests.get(f"http://localhost:5000/{bucketname}?list")
+	b = requests.get(f"http://localhost:5000/gifs?list")
 	objects = (r.json()['objects'])
+	gifs = b.json()['objects']
+	gif = [g['name'] for g in gifs]
+	# or (obj['name'] not in gif)
+	for obj in objects:
+		if (obj['name'][-3:].lower() not in ["mp4","mov", "avi"]) :
+
+			objects.remove(obj)
 	return render_template('show.html',
 		display=bucketname+"/display", 
 		bucketname=bucketname, list_example=[(  obj['name'],
@@ -32,7 +40,16 @@ def show(bucketname):
 @app.route('/<bucketname>/display')
 def display(bucketname):
 	r = requests.get(f"http://localhost:5000/{bucketname}?list")
+	b = requests.get(f"http://localhost:5000/gifs?list")
+	gifs = b.json()['objects']
+	gif = [g['name'] for g in gifs]
 	objects = (r.json()['objects'])
+	# or (obj['name'] not in gif)
+	for obj in objects:
+		if ((obj['name']+".gif" not in gif)) :
+
+			objects.remove(obj)
+	
 	return render_template('display.html',
 		delete_all=f"http://localhost:8080/{bucketname}/delete_all",
 		show=bucketname+"/show_all_videos", 

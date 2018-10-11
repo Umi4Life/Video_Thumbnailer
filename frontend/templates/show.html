@@ -11,16 +11,18 @@
 	<form action={{make_all}}>
 			<input type="submit" value="Make GIFs for all">
 	</form> 
-	<div class="grid-container">
+
 		{% for name in list_example %}
 		<div class="grid-item">
-		<li>{{ name[0] }}</li>
-		 <form action={{name[1]}} method="post">
-			<input type="submit" value="makeGIF">
-		</form> 
+		<div>
+			<li>{{ name[0] }}</li>
+			 <form action={{name[1]}} method="post">
+				<input type="submit" value="makeGIF">
+			</form> 
+		</div>
 		</div>
 		{% endfor %}
-	</div> 
+
 
 	</body>
 </html>
